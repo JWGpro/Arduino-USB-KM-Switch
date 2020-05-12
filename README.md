@@ -9,7 +9,9 @@ This is a fully functional keyboard & mouse switch (KVM but without Video), base
 
 Keyboard & mouse is toggled with ScrollLock Key. I recommend USB cable keyboard. All Serial communications has baud rate: 115200
 
-Connection Schematics:
+FOR FULL MOUSE SUPPORT (SCROLL WHEEL) YOU MUST UPDATE LIBRARY BY INCLUDED FIX.
+
+#Connection Schematics:
 
 ![Image description](https://github.com/nathalis/Arduino-USB-KM-Swtich/raw/master/schematic.png?raw=true)
 
