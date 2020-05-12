@@ -3,6 +3,8 @@
 
 # Arduino-USB-KM-Swtich
 
+...project status: testing
+
 This is a fully functional keyboard & mouse switch (KVM but without Video), based on the combination of two Arduino LEONARDO pro Micro and USB host shield.
 
 Keyboard & mouse is toggled with ScrollLock Key. I recommend USB cable keyboard. All Serial communications has baud rate: 115200
