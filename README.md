@@ -9,12 +9,16 @@ Connection Schematics:
 
 ![Image description](https://github.com/nathalis/Arduino-USB-KM-Swtich/raw/master/schematic.png?raw=true)
 
+USB Shield FIX:
+
 ![Image description](https://github.com/nathalis/Arduino-USB-KM-Swtich/raw/master/image_R0yRZCbReE.jpg?raw=true)
 ![Image description](https://github.com/nathalis/Arduino-USB-KM-Swtich/raw/master/usbhost_mini_micro_H3erAvbC0a.png?raw=true)
 
+Some photos:
+
 ![Image description](https://github.com/nathalis/Arduino-USB-KM-Swtich/raw/master/1.jpg?raw=true)
-![Image description](https://github.com/nathalis/Arduino-USB-KM-Swtich/raw/master/2.png?raw=true)
-![Image description](https://github.com/nathalis/Arduino-USB-KM-Swtich/raw/master/3.png?raw=true)
+![Image description](https://github.com/nathalis/Arduino-USB-KM-Swtich/raw/master/2.jpg?raw=true)
+![Image description](https://github.com/nathalis/Arduino-USB-KM-Swtich/raw/master/3.jpg?raw=true)
 
 
 
