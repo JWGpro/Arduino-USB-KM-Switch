@@ -4,6 +4,8 @@
 //*  by Nathalis [12-05-2020]
 //******************************************************************************
 
+bool debug=false; 
+
 #include <hidboot.h>
 #include <usbhub.h>
 
@@ -31,13 +33,13 @@ class MouseRptParser : public MouseReportParser
 
 void MouseRptParser::Parse(USBHID *hid, bool is_rpt_id, uint8_t len, uint8_t *buf)
 {
-  Serial.print("MouseRptParser::Parse");
+  if (debug==true) Serial.print("MouseRptParser::Parse");
   // Show USB HID mouse report
   for (uint8_t i = 0; i < 5 ; i++) {
-    Serial.print(' '); Serial.print(buf[i], HEX);
+    if (debug==true) Serial.print(' '); if (debug==true) Serial.print(buf[i], HEX);
 
   }
-  Serial.println();
+  if (debug==true) Serial.println();
 
   VALUE1='M';
   VALUE2=(char)(buf[1] ); //click
@@ -63,15 +65,15 @@ void KbdRptParser::PrintKey(uint8_t m, uint8_t key)
 {
   VALUE2=(char)(key );
 
-  Serial.print(" >");
+  if (debug==true) Serial.print(" >");
   PrintHex<uint8_t>(key, 0x80);
-  Serial.println("< ");
+  if (debug==true) Serial.println("< ");
 
 };
 
 void KbdRptParser::OnKeyDown(uint8_t mod, uint8_t key)
 {
-  Serial.print("DN ");
+  if (debug==true) Serial.print("DN ");
   //NCX
   VALUE1='D';
   PrintKey(mod, key);
@@ -99,7 +101,7 @@ void KbdRptParser::OnControlKeysChanged(uint8_t before, uint8_t after) {
   *((uint8_t*)&afterMod) = after;
 
   if (beforeMod.bmLeftCtrl != afterMod.bmLeftCtrl) {
-    Serial.println("LeftCtrl changed");
+    if (debug==true) Serial.println("LeftCtrl changed");
     if (CTRL_LEFT_ACTIVE) {
       CTRL_LEFT_ACTIVE=false;
       VALUE1='C';
@@ -112,7 +114,7 @@ void KbdRptParser::OnControlKeysChanged(uint8_t before, uint8_t after) {
     
   }
   if (beforeMod.bmLeftShift != afterMod.bmLeftShift) {
-    Serial.println("LeftShift changed");
+    if (debug==true) Serial.println("LeftShift changed");
     if (SHIFT_LEFT_ACTIVE) {
       SHIFT_LEFT_ACTIVE=false;
       VALUE1='S';
@@ -124,7 +126,7 @@ void KbdRptParser::OnControlKeysChanged(uint8_t before, uint8_t after) {
     }
   }
   if (beforeMod.bmLeftAlt != afterMod.bmLeftAlt) {
-    Serial.println("LeftAlt changed");
+    if (debug==true) Serial.println("LeftAlt changed");
     if (ALT_LEFT_ACTIVE) {
       ALT_LEFT_ACTIVE=false;
       VALUE1='A';
@@ -136,7 +138,7 @@ void KbdRptParser::OnControlKeysChanged(uint8_t before, uint8_t after) {
     }  
   }
   if (beforeMod.bmLeftGUI != afterMod.bmLeftGUI) {
-    Serial.println("LeftGUI changed");
+    if (debug==true) Serial.println("LeftGUI changed");
     if (GUI_LEFT_ACTIVE) {
       GUI_LEFT_ACTIVE=false;
       VALUE1='G';
@@ -149,7 +151,7 @@ void KbdRptParser::OnControlKeysChanged(uint8_t before, uint8_t after) {
   }
 
   if (beforeMod.bmRightCtrl != afterMod.bmRightCtrl) {
-    Serial.println("RightCtrl changed");
+    if (debug==true) Serial.println("RightCtrl changed");
     if (CTRL_RIGHT_ACTIVE) {
       CTRL_RIGHT_ACTIVE=false;
       VALUE1='C';
@@ -161,7 +163,7 @@ void KbdRptParser::OnControlKeysChanged(uint8_t before, uint8_t after) {
     }
 }
   if (beforeMod.bmRightShift != afterMod.bmRightShift) {
-    Serial.println("RightShift changed");
+    if (debug==true) Serial.println("RightShift changed");
     if (SHIFT_RIGHT_ACTIVE) {
       SHIFT_RIGHT_ACTIVE=false;
       VALUE1='S';
@@ -173,7 +175,7 @@ void KbdRptParser::OnControlKeysChanged(uint8_t before, uint8_t after) {
     }
   }
   if (beforeMod.bmRightAlt != afterMod.bmRightAlt) {
-    Serial.println("RightAlt changed");
+    if (debug==true) Serial.println("RightAlt changed");
     if (ALT_RIGHT_ACTIVE) {
       ALT_RIGHT_ACTIVE=false;
       VALUE1='A';
@@ -185,7 +187,7 @@ void KbdRptParser::OnControlKeysChanged(uint8_t before, uint8_t after) {
     }    
   }
   if (beforeMod.bmRightGUI != afterMod.bmRightGUI) {
-    Serial.println("RightGUI changed");
+    if (debug==true) Serial.println("RightGUI changed");
     if (GUI_RIGHT_ACTIVE) {
       GUI_RIGHT_ACTIVE=false;
       VALUE1='G';
@@ -201,7 +203,7 @@ void KbdRptParser::OnControlKeysChanged(uint8_t before, uint8_t after) {
 
 void KbdRptParser::OnKeyUp(uint8_t mod, uint8_t key)
 {
-  Serial.print("UP ");
+  if (debug==true) Serial.print("UP ");
   //NCX
   VALUE1='U';
   PrintKey(mod, key);
@@ -209,8 +211,8 @@ void KbdRptParser::OnKeyUp(uint8_t mod, uint8_t key)
 
 void KbdRptParser::OnKeyPressed(uint8_t key)
 {
-  Serial.print("ASCII: ");
-  Serial.println((char)key);
+  if (debug==true) Serial.print("ASCII: ");
+  if (debug==true) Serial.println((char)key);
 };
 
 USB        Usb;
@@ -228,10 +230,11 @@ MouseRptParser MousePrs;
 //********************************************************************************
 // SETUP
 //********************************************************************************
+
 void setup()
 {
-  Serial.begin( 115200 );
-  Serial.println( "USB Keyboard and Mouse Switch by Nathalis" );
+  if (debug==true) if (debug==true) Serial.begin( 115200 );
+  if (debug==true) if (debug==true) Serial.println( "USB Keyboard and Mouse Switch by Nathalis" );
   
   delay(1000);
   Serial1.begin(115200); //for output
@@ -239,10 +242,10 @@ void setup()
   Keyboard.begin();
   Mouse.begin();
   
-  Serial.println("Start");
+  if (debug==true) if (debug==true) Serial.println("Start");
 
   if (Usb.Init() == -1)
-    Serial.println("OSC did not start.");
+    if (debug==true) if (debug==true) if (debug==true) Serial.println("OSC did not start.");
 
   delay( 300 );
 
@@ -257,15 +260,17 @@ void setup()
 //********************************************************************************
 
 bool CAPSLOCK=false;
-bool NUMLOCK=true;
+bool NUMLOCK=false;
 bool SCROLLLOCK=false;
 
 void loop()
 {
   Usb.Task();
-
+  
+  //if (debug) Serial.println(Usb.getUsbTaskState());
+  
   if (VALUE1!=0) {
-    delay(1);
+    delayMicroseconds(100);
     
     VALUE1 = VALUE1 & 0xff;
     VALUE2 = VALUE2 & 0xff;
@@ -273,16 +278,16 @@ void loop()
     VALUE4 = VALUE4 & 0xff;
     VALUE5 = VALUE5 & 0xff;
         
-    Serial.print((char)VALUE1);  //Print codes to console...
-    Serial.print(" ");
-    Serial.print(VALUE2, HEX);
-    Serial.print(" ");
-    Serial.print(VALUE3, HEX);
-    Serial.print(" ");
-    Serial.print(VALUE4, HEX);
-    Serial.print(" ");
-    Serial.print(VALUE5, HEX);
-    Serial.println(" ");
+    if (debug) Serial.print((char)VALUE1);  //Print codes to console...
+    if (debug) Serial.print(" ");
+    if (debug) Serial.print(VALUE2, HEX);
+    if (debug) Serial.print(" ");
+    if (debug) Serial.print(VALUE3, HEX);
+    if (debug) Serial.print(" ");
+    if (debug) Serial.print(VALUE4, HEX);
+    if (debug) Serial.print(" ");
+    if (debug) Serial.print(VALUE5, HEX);
+    if (debug) Serial.println(" ");
 
 
     if (VALUE1=='D' && VALUE2==0x47) { if (SCROLLLOCK) SCROLLLOCK=false; else SCROLLLOCK=true; }
