@@ -9,13 +9,6 @@ bool debug=false;
 #include <hidboot.h>
 #include <usbhub.h>
 
-// Satisfy IDE, which only needs to see the include statment in the ino.
-#ifdef dobogusinclude
-#include <spi4teensy3.h>
-#endif
-#include <SPI.h>
-
-
 #include <Keyboard.h>
 #include <Mouse.h>
 
@@ -24,13 +17,13 @@ unsigned char VALUE2 = 0;
 unsigned char VALUE3 = 0;
 unsigned char VALUE4 = 0;
 unsigned char VALUE5 = 0;
-
+//------------------------------------------------------------------------------------------
 class MouseRptParser : public MouseReportParser
 {
   protected:
     void Parse(USBHID *hid, bool is_rpt_id, uint8_t len, uint8_t *buf);
 };
-
+//------------------------------------------------------------------------------------------
 void MouseRptParser::Parse(USBHID *hid, bool is_rpt_id, uint8_t len, uint8_t *buf)
 {
   if (debug==true) Serial.print("MouseRptParser::Parse");
@@ -45,11 +38,9 @@ void MouseRptParser::Parse(USBHID *hid, bool is_rpt_id, uint8_t len, uint8_t *bu
   VALUE2=(char)(buf[1] ); //click
   VALUE3=(char)(buf[2] ); //X
   VALUE4=(char)(buf[3] ); //Y
-  VALUE5=(char)(buf[4] ); //Z
+  VALUE5=(char)(buf[4] ); //Z (scroll)
 }
-
 //********************************************************************************
-
 class KbdRptParser : public KeyboardReportParser
 {
     void PrintKey(uint8_t mod, uint8_t key);
@@ -60,29 +51,29 @@ class KbdRptParser : public KeyboardReportParser
     void OnKeyUp	(uint8_t mod, uint8_t key);
     void OnKeyPressed(uint8_t key);
 };
-
+//------------------------------------------------------------------------------------------
 void KbdRptParser::PrintKey(uint8_t m, uint8_t key)
 {
   VALUE2=(char)(key );
 
-  if (debug==true) Serial.print(" >");
-  PrintHex<uint8_t>(key, 0x80);
-  if (debug==true) Serial.println("< ");
+  if (debug) Serial.print(" >");
+  if (debug) PrintHex<uint8_t>(key, 0x80);
+  if (debug) Serial.println("< ");
 
 };
-
+//------------------------------------------------------------------------------------------
 void KbdRptParser::OnKeyDown(uint8_t mod, uint8_t key)
 {
-  if (debug==true) Serial.print("DN ");
+  if (debug) Serial.print("DN ");
   //NCX
   VALUE1='D';
-  PrintKey(mod, key);
-  uint8_t c = OemToAscii(mod, key);
+  VALUE2=key;
+  //PrintKey(mod, key);
+  //uint8_t c = OemToAscii(mod, key);
 
-  if (c)
-    OnKeyPressed(c);
+  //if (c) OnKeyPressed(c);
 }
-
+//------------------------------------------------------------------------------------------
 bool SHIFT_LEFT_ACTIVE=false;
 bool SHIFT_RIGHT_ACTIVE=false;
 bool CTRL_LEFT_ACTIVE=false;
@@ -101,7 +92,7 @@ void KbdRptParser::OnControlKeysChanged(uint8_t before, uint8_t after) {
   *((uint8_t*)&afterMod) = after;
 
   if (beforeMod.bmLeftCtrl != afterMod.bmLeftCtrl) {
-    if (debug==true) Serial.println("LeftCtrl changed");
+    if (debug) Serial.println("LeftCtrl changed");
     if (CTRL_LEFT_ACTIVE) {
       CTRL_LEFT_ACTIVE=false;
       VALUE1='C';
@@ -114,7 +105,7 @@ void KbdRptParser::OnControlKeysChanged(uint8_t before, uint8_t after) {
     
   }
   if (beforeMod.bmLeftShift != afterMod.bmLeftShift) {
-    if (debug==true) Serial.println("LeftShift changed");
+    if (debug) Serial.println("LeftShift changed");
     if (SHIFT_LEFT_ACTIVE) {
       SHIFT_LEFT_ACTIVE=false;
       VALUE1='S';
@@ -126,7 +117,7 @@ void KbdRptParser::OnControlKeysChanged(uint8_t before, uint8_t after) {
     }
   }
   if (beforeMod.bmLeftAlt != afterMod.bmLeftAlt) {
-    if (debug==true) Serial.println("LeftAlt changed");
+    if (debug) Serial.println("LeftAlt changed");
     if (ALT_LEFT_ACTIVE) {
       ALT_LEFT_ACTIVE=false;
       VALUE1='A';
@@ -138,7 +129,7 @@ void KbdRptParser::OnControlKeysChanged(uint8_t before, uint8_t after) {
     }  
   }
   if (beforeMod.bmLeftGUI != afterMod.bmLeftGUI) {
-    if (debug==true) Serial.println("LeftGUI changed");
+    if (debug) Serial.println("LeftGUI changed");
     if (GUI_LEFT_ACTIVE) {
       GUI_LEFT_ACTIVE=false;
       VALUE1='G';
@@ -151,7 +142,7 @@ void KbdRptParser::OnControlKeysChanged(uint8_t before, uint8_t after) {
   }
 
   if (beforeMod.bmRightCtrl != afterMod.bmRightCtrl) {
-    if (debug==true) Serial.println("RightCtrl changed");
+    if (debug) Serial.println("RightCtrl changed");
     if (CTRL_RIGHT_ACTIVE) {
       CTRL_RIGHT_ACTIVE=false;
       VALUE1='C';
@@ -163,7 +154,7 @@ void KbdRptParser::OnControlKeysChanged(uint8_t before, uint8_t after) {
     }
 }
   if (beforeMod.bmRightShift != afterMod.bmRightShift) {
-    if (debug==true) Serial.println("RightShift changed");
+    if (debug) Serial.println("RightShift changed");
     if (SHIFT_RIGHT_ACTIVE) {
       SHIFT_RIGHT_ACTIVE=false;
       VALUE1='S';
@@ -175,7 +166,7 @@ void KbdRptParser::OnControlKeysChanged(uint8_t before, uint8_t after) {
     }
   }
   if (beforeMod.bmRightAlt != afterMod.bmRightAlt) {
-    if (debug==true) Serial.println("RightAlt changed");
+    if (debug) Serial.println("RightAlt changed");
     if (ALT_RIGHT_ACTIVE) {
       ALT_RIGHT_ACTIVE=false;
       VALUE1='A';
@@ -187,7 +178,7 @@ void KbdRptParser::OnControlKeysChanged(uint8_t before, uint8_t after) {
     }    
   }
   if (beforeMod.bmRightGUI != afterMod.bmRightGUI) {
-    if (debug==true) Serial.println("RightGUI changed");
+    if (debug) Serial.println("RightGUI changed");
     if (GUI_RIGHT_ACTIVE) {
       GUI_RIGHT_ACTIVE=false;
       VALUE1='G';
@@ -203,17 +194,20 @@ void KbdRptParser::OnControlKeysChanged(uint8_t before, uint8_t after) {
 
 void KbdRptParser::OnKeyUp(uint8_t mod, uint8_t key)
 {
-  if (debug==true) Serial.print("UP ");
+  if (debug) Serial.print("UP ");
   //NCX
   VALUE1='U';
-  PrintKey(mod, key);
+  VALUE2=key;
+  //PrintKey(mod, key);
 }
 
-void KbdRptParser::OnKeyPressed(uint8_t key)
+/*void KbdRptParser::OnKeyPressed(uint8_t key)
 {
-  if (debug==true) Serial.print("ASCII: ");
-  if (debug==true) Serial.println((char)key);
-};
+  if (debug) Serial.print("ASCII: ");
+  if (debug) Serial.println((char)key);
+};*/
+
+//********************************************************************************
 
 USB        Usb;
 USBHub     Hub(&Usb);
@@ -233,21 +227,20 @@ MouseRptParser MousePrs;
 
 void setup()
 {
-  if (debug==true) if (debug==true) Serial.begin( 115200 );
-  if (debug==true) if (debug==true) Serial.println( "USB Keyboard and Mouse Switch by Nathalis" );
+  if (debug) if (debug) Serial.begin( 115200 );
+  if (debug) if (debug) Serial.println( "USB Keyboard and Mouse Switch by Nathalis" );
   
-  delay(1000);
   Serial1.begin(115200); //for output
   
   Keyboard.begin();
   Mouse.begin();
   
-  if (debug==true) if (debug==true) Serial.println("Start");
+  if (debug) Serial.println("Start");
 
   if (Usb.Init() == -1)
-    if (debug==true) if (debug==true) if (debug==true) Serial.println("OSC did not start.");
+    if (debug)  Serial.println("OSC did not start.");
 
-  delay( 300 );
+  delay( 1000 );
 
   HidComposite.SetReportParser(0, &KbdPrs);
   HidComposite.SetReportParser(1, &MousePrs);
@@ -270,7 +263,7 @@ void loop()
   //if (debug) Serial.println(Usb.getUsbTaskState());
   
   if (VALUE1!=0) {
-    delayMicroseconds(100);
+    //delayMicroseconds(100);
     
     VALUE1 = VALUE1 & 0xff;
     VALUE2 = VALUE2 & 0xff;
@@ -295,12 +288,21 @@ void loop()
     if (SCROLLLOCK) {
 
       //WRITE DATA TO SLAVE ARDUINO
+
+      char data[32];
+      strncpy(data, "", sizeof(data));
+      
+      sprintf(data,"%c %u %u %u %u",VALUE1,VALUE2,VALUE3,VALUE4,VALUE5);
+
+      Serial1.print(data);
+      if (debug) Serial.println(data);
+      delayMicroseconds(1000);
     
-      Serial1.print((char)VALUE1);
+      /*Serial1.print((char)VALUE1);
       Serial1.print((char)VALUE2);
       Serial1.print((char)VALUE3);
       Serial1.print((char)VALUE4);
-      Serial1.print((char)VALUE5);
+      Serial1.print((char)VALUE5);*/
     
     } else {
       

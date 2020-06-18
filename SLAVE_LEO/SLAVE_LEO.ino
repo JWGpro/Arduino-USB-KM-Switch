@@ -4,37 +4,87 @@
 //*  by Nathalis [12-05-2020]
 //******************************************************************************
 
-bool debug = false;
+bool debug = true;
 
 #include <Keyboard.h>
 #include <Mouse.h>
 
-unsigned char VALUE1 = 0;
+ char VALUE1 = ' ';
 unsigned char VALUE2 = 0;
 unsigned char VALUE3 = 0;
 unsigned char VALUE4 = 0;
 unsigned char VALUE5 = 0;
-unsigned char OLDVALUE1 = 0;
-unsigned char OLDVALUE2 = 0;
-unsigned char OLDVALUE3 = 0;
-unsigned char OLDVALUE4 = 0;
-unsigned char OLDVALUE5 = 0;
+
+  char _VALUE1 = ' ';
+  int  _VALUE2 = 0;
+  int  _VALUE3 = 0;
+  int  _VALUE4 = 0;
+  int  _VALUE5 = 0;
+
+
+byte tmp=0;
 
 void loadKEYs() {
-  OLDVALUE1 = VALUE1;
-  OLDVALUE2 = VALUE2;
-  OLDVALUE3 = VALUE3;
-  OLDVALUE4 = VALUE4;
-  OLDVALUE5 = VALUE5;
-
-  VALUE1 = Serial1.read();
+  VALUE1 = 0;
   VALUE2 = 0;
   VALUE3 = 0;
   VALUE4 = 0;
   VALUE5 = 0;
+  
+
+  char data[32];
+  strncpy(data, "", sizeof(data));
+
+  tmp=0;
   delayMicroseconds(500);
+  while (Serial1.available()) {
+    data[tmp]=Serial1.read();
+    data[tmp+1]='\0';
+    tmp++;
+  }
+  delayMicroseconds(500);
+  while (Serial1.available()) {
+    data[tmp]=Serial1.read();
+    data[tmp+1]='\0';
+    tmp++;
+  }
+
+
+  if (debug) Serial.println(data);
+
+   _VALUE1 = ' ';
+   _VALUE2 = 0;
+   _VALUE3 = 0;
+   _VALUE4 = 0;
+   _VALUE5 = 0;
+
+
+  sscanf(data,"%c %u %u %u %u",&_VALUE1,&_VALUE2,&_VALUE3,&_VALUE4,&_VALUE5);
+
+  VALUE1 = _VALUE1;
+  VALUE2 = _VALUE2 & 0xff;;
+  VALUE3 = _VALUE3 & 0xff;;
+  VALUE4 = _VALUE4 & 0xff;;
+  VALUE5 = _VALUE5 & 0xff;;
+
+  /*Serial.println(VALUE1);
+  Serial.println(VALUE2);
+  Serial.println(VALUE3);
+  Serial.println(VALUE4);
+  Serial.println(VALUE5);*/
+
+/*  if (Serial1.available()) {
+    VALUE1 = Serial1.read();
+
+    if (VALUE1!='M' && VALUE1!='A' && VALUE1!='C' && VALUE1!='S' && VALUE1!='U' && VALUE1!='D' && VALUE1!='G') return;
+    
+  }
+
   if (Serial1.available()) {
     VALUE2 = Serial1.read();
+
+    if (VALUE2=='M' || VALUE2=='A' || VALUE2=='C' || VALUE2=='S' || VALUE2=='U' || VALUE2=='D' || VALUE2=='G') return;
+  
   }
   //delay(1);
   if (Serial1.available()) {
@@ -47,8 +97,8 @@ void loadKEYs() {
   //delay(1);
   if (Serial1.available()) {
     VALUE5 = Serial1.read();
-  }
-
+  }*/
+   Serial1.flush();
 }
 //*****************************************************************************
 //*  MAIN SETUP
@@ -59,8 +109,9 @@ void setup() {
   if (debug) Serial.begin(115200); //for console
   Serial1.begin(115200); //for input
   // initialize control over the keyboard:
-  Keyboard.begin();
+
   Mouse.begin();
+  Keyboard.begin();
 
 }
 //*****************************************************************************
@@ -73,14 +124,16 @@ bool NUMLOCK = true;
 void loop() {
   // check for incoming serial data:
 
-  if (Serial1.available()) {
+  if (Serial1.available()>8) {
     loadKEYs(); //read keyboard/mouse codes from if (debug) Serial.
 
-    VALUE1 = VALUE1 & 0xff;
+    //if (VALUE1=='M' || VALUE1=='A' || VALUE1=='C' || VALUE1=='S' || VALUE1=='U' || VALUE1=='D' || VALUE1=='G') {
+    
+    /*VALUE1 = VALUE1 & 0xff;
     VALUE2 = VALUE2 & 0xff;
     VALUE3 = VALUE3 & 0xff;
     VALUE4 = VALUE4 & 0xff;
-    VALUE5 = VALUE5 & 0xff;
+    VALUE5 = VALUE5 & 0xff;*/
 
     if (debug) Serial.print((char)VALUE1);  //Print codes to console...
     if (debug) Serial.print(" ");
@@ -611,9 +664,5 @@ void loop() {
     }
     if (VALUE1 == 'U' && VALUE2 == 0x48) {
       Keyboard.release(KEY_PAUSE);
-    }
-
-  }
-
-
+    }  }
 }
