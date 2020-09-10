@@ -3,7 +3,7 @@
 
 # Arduino-USB-KM-Swtich
 
-...project status: testing
+...project status: closed.
 
 This is a fully functional keyboard & mouse switch (KVM but without Video), based on the combination of two Arduino LEONARDO pro Micro and USB host shield.
 
