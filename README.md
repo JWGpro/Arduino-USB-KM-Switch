@@ -1,11 +1,13 @@
 
 ![Image description](https://github.com/nathalis/Arduino-USB-KM-Swtich/raw/master/KM_switch_icon.png?raw=true)
 
-# Arduino-USB-KM-Swtich
+# Arduino-USB-KM-Swtich-1.0
 
-...project status: closed.
+## This project hase gliches and is repleaced by newer https://github.com/nathalis/Arduino-USB-KM-Switch-2.0
 
-This is a fully functional keyboard & mouse switch (KVM but without Video), based on the combination of two Arduino LEONARDO pro Micro and USB host shield.
+## ...project status: closed.
+
+This is a keyboard & mouse switch (KVM but without Video), based on the combination of two Arduino LEONARDO pro Micro and USB host shield.
 
 Keyboard & mouse is toggled with ScrollLock Key. I recommend USB cable keyboard. All Serial communications has baud rate: 115200
 
