@@ -3,7 +3,7 @@
 
 # Arduino-USB-KM-Swtich-1.0
 
-## This project hase gliches and is repleaced by newer https://github.com/nathalis/Arduino-USB-KM-Switch-2.0
+## This project has gliches and is repleaced by newer https://github.com/nathalis/Arduino-USB-KM-Switch-2.0
 
 ## ...project status: closed.
 
