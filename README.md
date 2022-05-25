@@ -1,5 +1,5 @@
 
-![Image description](https://github.com/JWGpro/Arduino-USB-KM-Swtich/raw/master/KM_switch_icon.png?raw=true)
+![Image description](https://github.com/JWGpro/Arduino-USB-KM-Switch/raw/master/KM_switch_icon.png?raw=true)
 
 # Arduino-USB-KM-Switch-1.0
 
@@ -17,18 +17,18 @@ FOR FULL MOUSE SUPPORT (SCROLL WHEEL) YOU MUST UPDATE LIBRARY BY INCLUDED FIX.
 
 #Connection Schematics:
 
-![Image description](https://github.com/JWGpro/Arduino-USB-KM-Swtich/raw/master/schematic.png?raw=true)
+![Image description](https://github.com/JWGpro/Arduino-USB-KM-Switch/raw/master/schematic.png?raw=true)
 
 USB Shield FIX:
 
-![Image description](https://github.com/JWGpro/Arduino-USB-KM-Swtich/raw/master/image_R0yRZCbReE.jpg?raw=true)
-![Image description](https://github.com/JWGpro/Arduino-USB-KM-Swtich/raw/master/usbhost_mini_micro_H3erAvbC0a.png?raw=true)
+![Image description](https://github.com/JWGpro/Arduino-USB-KM-Switch/raw/master/image_R0yRZCbReE.jpg?raw=true)
+![Image description](https://github.com/JWGpro/Arduino-USB-KM-Switch/raw/master/usbhost_mini_micro_H3erAvbC0a.png?raw=true)
 
 Some photos:
 
-![Image description](https://github.com/JWGpro/Arduino-USB-KM-Swtich/raw/master/1.jpg?raw=true)
-![Image description](https://github.com/JWGpro/Arduino-USB-KM-Swtich/raw/master/2.jpg?raw=true)
-![Image description](https://github.com/JWGpro/Arduino-USB-KM-Swtich/raw/master/3.jpg?raw=true)
+![Image description](https://github.com/JWGpro/Arduino-USB-KM-Switch/raw/master/1.jpg?raw=true)
+![Image description](https://github.com/JWGpro/Arduino-USB-KM-Switch/raw/master/2.jpg?raw=true)
+![Image description](https://github.com/JWGpro/Arduino-USB-KM-Switch/raw/master/3.jpg?raw=true)
 
 
 
